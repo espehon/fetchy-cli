@@ -1,2 +1,2 @@
-# fetchy_cli
+# fetchy-cli
 Fetch strings from your terminal!
