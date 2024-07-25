@@ -25,20 +25,21 @@ parser = argparse.ArgumentParser(
     epilog="Homepage: https://github.com/espehon/fetchy-cli",
     allow_abbrev=False,
     add_help=False,
-    usage="fet -n pi 3.14159265359",
+    usage="\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359",
     formatter_class=argparse.RawTextHelpFormatter
 )
 
 parser.add_argument('-?', '--help', action='help', help='Show this help message and exit.')
-parser.add_argument('-c', '--copy', nargs=1, metavar='V', action='store', type=str, help='Copy the value of [V] to the clipboard.')
-parser.add_argument('-l', '--list', action='store_true', help='List saved variable names.')
-parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('Name', 'Value'), help='Assign [Value] to [Name].')
-parser.add_argument('-d', '--delete', nargs='+', metavar=('Name1', 'Name2', '...'), action='store', type=str, help='Delete [Name1] etc.')
 parser.add_argument('-v', '--version', action='version', version=__version__, help="Show package version and exit.")
+parser.add_argument('-c', '--copy', nargs=1, metavar='N', action='store', type=str, help='Copy the value of [N] to the clipboard.')
+parser.add_argument('-l', '--list', action='store_true', help='List saved variable names.')
+parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), help='Assign [V] to [N].')
+parser.add_argument('-d', '--delete', nargs='+', metavar=('N1', 'N2'), action='store', type=str, help='Delete [N1] etc.')
 
 
 
 
 
-def cli():
+def cli(argv=None):
+    args = parser.parse_args(argv) #Execute parse_args()
     pass
