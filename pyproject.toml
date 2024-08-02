@@ -11,7 +11,7 @@ authors = [
 
 description = "Fetch saved strings from the terminal!"               # Header on PyPI (above readme)
 readme = "README.md"                                  # Boilerplate and will be added to the PyPI page
-requires-python = ">=3.10"                            # Python version
+requires-python = ">=3.8"                            # Python version
 dependencies = []                                     # Any site-package dependencies (as a list)
 	                                                # NOTE: if any given, the pip test will be different
 

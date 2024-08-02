@@ -16,7 +16,6 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
 # Set user paths
-# home = os.path.expanduser("~") # not needed?
 storage_path = os.path.expanduser("~/.share/tasky/")
 
 # Set argument parsing
@@ -33,7 +32,7 @@ parser.add_argument('-?', '--help', action='help', help='Show this help message 
 parser.add_argument('-v', '--version', action='version', version=__version__, help="Show package version and exit.")
 parser.add_argument('-c', '--copy', nargs=1, metavar='N', action='store', type=str, help='Copy the value of [N] to the clipboard.')
 parser.add_argument('-l', '--list', action='store_true', help='List saved variable names.')
-parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), help='Assign [V] to [N].')
+parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), help='Create [N] with the value of [V]. (Overwrite existing)')
 parser.add_argument('-d', '--delete', nargs='+', metavar=('N1', 'N2'), action='store', type=str, help='Delete [N1] etc.')
 
 
