@@ -15,8 +15,25 @@ try:
 except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
-# Set user paths
-storage_path = os.path.expanduser("~/.share/tasky/")
+# Set file paths
+storage_folder = os.path.expanduser("~/.share/fetchy/")
+storage_file = "fetchy.json"
+storage_path = storage_folder + storage_file
+
+
+# Check if storage folder exists, create it if missing.
+if os.path.exists(os.path.expanduser(storage_folder)) == False:
+    os.makedirs(storage_folder)
+
+# Check if storage file exists, create it if missing.
+if os.path.exists(storage_path) == False:
+    with open(storage_path, 'w', encoding='utf-8') as file:
+        json.dump({}, file)
+
+# read storage file
+with open(storage_path, 'r') as file:
+    data = json.load(file)
+
 
 # Set argument parsing
 parser = argparse.ArgumentParser(
@@ -34,9 +51,14 @@ parser.add_argument('-c', '--copy', nargs=1, metavar='N', action='store', type=s
 parser.add_argument('-l', '--list', action='store_true', help='List saved variable names.')
 parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), help='Create [N] with the value of [V]. (Overwrite existing)')
 parser.add_argument('-d', '--delete', nargs='+', metavar=('N1', 'N2'), action='store', type=str, help='Delete [N1] etc.')
+parser.add_argument('-r', '--rename', nargs=2, type=str, metavar=('O', 'N'), help='Rename [O] to [N].')
 
 
 
+
+
+def read_storage():
+    pass
 
 
 def cli(argv=None):
