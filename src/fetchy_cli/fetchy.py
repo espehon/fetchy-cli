@@ -106,6 +106,16 @@ def delete_notes(dictionary, note_name_list: list):
         print("No changes were made.")
 
 
+def rename_note(dictionary, old_name, new_name):
+    if old_name in dictionary:
+        dictionary[new_name] = dictionary[old_name]
+        dictionary.pop(old_name)
+        save_data(dictionary, storage_path)
+        print("Entry renamed.")
+    else:
+        print(f"{old_name} is not an entry.")
+
+
 def list_items(dictionary):
     print(f"{len(dictionary)} entries:")
     for key in dictionary:
@@ -126,6 +136,8 @@ def cli(argv=None):
     elif args.list:
         list_items(data)
     
+    elif args.rename:
+        rename_note(data, args.rename[0], args.rename[1])    
     elif args.delete:
         delete_notes(data, args.delete)
     elif args.name:
