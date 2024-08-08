@@ -55,6 +55,7 @@ parser.add_argument('-l', '--list', action='store_true', help='List saved variab
 parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), action='store', help='Create [N] with the value of [V]. (Overwrite existing)')
 parser.add_argument('-d', '--delete', nargs='+', metavar=('N1', 'N2'), action='store', type=str, help='Delete [N1] etc.')
 parser.add_argument('-r', '--rename', nargs=2, type=str, metavar=('O', 'N'), action='store', help='Rename [O] to [N].')
+parser.add_argument("name", nargs='?', help="Name of entry to fetch.")
 
 
 def save_data(dictionary, file_path):
@@ -84,7 +85,20 @@ def new_note(dictionary, note_name, note_value):
         print("Note created.")
 
 
+def fetch(dictionary, note_name):
+    try:
+        print(f"{note_name}:\n{dictionary[note_name]}")
+    except ValueError:
+        print(f"No item matched {note_name}")
+
+
 def cli(argv=None):
     args = parser.parse_args(argv) #Execute parse_args()
+    print(args) # REMOVE: used for testing
     if args.new:
         new_note(data, args.new[0], args.new[1])
+    
+    elif args.name:
+        print(f"{args.name}:\n{data[args.name]}")
+
+    
