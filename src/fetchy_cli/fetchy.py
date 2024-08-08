@@ -41,10 +41,10 @@ except ValueError:
 # Set argument parsing
 parser = argparse.ArgumentParser(
     description="Fetchy: Fetch strings from your system rather than your own memory!",
-    epilog="Homepage: https://github.com/espehon/fetchy-cli",
+    epilog="Example:\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359\n\nHomepage: https://github.com/espehon/fetchy-cli",
     allow_abbrev=False,
     add_help=False,
-    usage="\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359",
+    usage="fet [Name] [-n Name Value] [-c Name] [-d Name1 ...] [-r OldName NewName] [-l] [-?] ",
     formatter_class=argparse.RawTextHelpFormatter
 )
 
