@@ -58,9 +58,14 @@ parser.add_argument('-r', '--rename', nargs=2, type=str, metavar=('O', 'N'), act
 parser.add_argument("name", nargs='?', help="Name of entry to fetch.")
 
 
+def sort_dict(dictionary) -> dict:
+    sorted_dict = dict(sorted(dictionary.items()))
+    return sorted_dict
+
+
 def save_data(dictionary, file_path):
     with open(file_path, 'w') as file:
-        json.dump(dictionary, file)
+        json.dump(sort_dict(dictionary), file)
 
 
 def overwrite_note(dictionary, note_name, note_value):
