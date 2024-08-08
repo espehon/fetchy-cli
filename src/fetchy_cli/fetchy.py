@@ -90,6 +90,12 @@ def new_note(dictionary, note_name, note_value):
         print("Note created.")
 
 
+def list_items(dictionary):
+    print(f"{len(dictionary)} entries:")
+    for key in dictionary:
+        print("\t" + key)
+
+
 def fetch(dictionary, note_name):
     try:
         print(f"{note_name}:\n{dictionary[note_name]}")
@@ -102,6 +108,8 @@ def cli(argv=None):
     print(args) # REMOVE: used for testing
     if args.new:
         new_note(data, args.new[0], args.new[1])
+    elif args.list:
+        list_items(data)
     
     elif args.name:
         print(f"{args.name}:\n{data[args.name]}")
