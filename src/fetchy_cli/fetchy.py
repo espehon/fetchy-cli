@@ -90,6 +90,22 @@ def new_note(dictionary, note_name, note_value):
         print("Note created.")
 
 
+def delete_notes(dictionary, note_name_list: list):
+    items_deleted = 0
+    for note_name in note_name_list:
+        if note_name in dictionary:
+            dictionary.pop(note_name)
+            items_deleted += 1
+            print(F"{note_name} marked for removal.")
+        else:
+            print(f"{note_name} is not an entry.")
+    if items_deleted > 0:
+        save_data(dictionary, storage_path)
+        print(f"{items_deleted} entries deleted.")
+    else:
+        print("No changes were made.")
+
+
 def list_items(dictionary):
     print(f"{len(dictionary)} entries:")
     for key in dictionary:
@@ -105,12 +121,13 @@ def fetch(dictionary, note_name):
 
 def cli(argv=None):
     args = parser.parse_args(argv) #Execute parse_args()
-    print(args) # REMOVE: used for testing
     if args.new:
         new_note(data, args.new[0], args.new[1])
     elif args.list:
         list_items(data)
     
+    elif args.delete:
+        delete_notes(data, args.delete)
     elif args.name:
         print(f"{args.name}:\n{data[args.name]}")
 
