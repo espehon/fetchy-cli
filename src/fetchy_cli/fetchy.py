@@ -6,8 +6,9 @@ import os
 import sys
 import argparse
 import json
-import copy
 import importlib.metadata
+
+import copykitten
 
 
 try:
@@ -122,6 +123,13 @@ def list_items(dictionary):
         print("\t" + key)
 
 
+def copy_to_clipboard(dictionary, note_name):
+    if note_name in dictionary:
+        copykitten.copy(dictionary[note_name])
+    else:
+        print(f"No item matched {note_name}")
+
+
 def fetch(dictionary, note_name):
     try:
         print(f"{note_name}:\n{dictionary[note_name]}")
@@ -135,7 +143,8 @@ def cli(argv=None):
         new_note(data, args.new[0], args.new[1])
     elif args.list:
         list_items(data)
-    
+    elif args.copy:
+        copy_to_clipboard(data, args.copy[0])
     elif args.rename:
         rename_note(data, args.rename[0], args.rename[1])    
     elif args.delete:

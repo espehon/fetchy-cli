@@ -4,15 +4,17 @@ build-backend = "setuptools.build_meta"               # Boilerplate
 
 [project]
 name = "fetchy-cli"                              # Your pip install <name> (must be unique)
-version = "0.0.1"                               # Must be manually updated here with every change
+version = "0.1.0"                               # Must be manually updated here with every change
 authors = [
 	{ name="espehon", email="espehon@gmail.com" },      # Email is optional (as array?)
 ]
 
-description = "Fetch saved strings from the terminal!"               # Header on PyPI (above readme)
+description = "Fetch strings from your system rather than your own memory!"               # Header on PyPI (above readme)
 readme = "README.md"                                  # Boilerplate and will be added to the PyPI page
 requires-python = ">=3.8"                            # Python version
-dependencies = []                                     # Any site-package dependencies (as a list)
+dependencies = [
+	"copykitten >= 1.2.0" 
+]                                     # Any site-package dependencies (as a list)
 	                                                # NOTE: if any given, the pip test will be different
 
 
