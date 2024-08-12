@@ -132,7 +132,7 @@ def copy_to_clipboard(dictionary, note_name):
 
 def fetch(dictionary, note_name):
     try:
-        print(f"{note_name}:\n{dictionary[note_name]}")
+        print(dictionary[note_name])
     except ValueError:
         print(f"No item matched {note_name}")
 
