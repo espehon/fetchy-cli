@@ -139,7 +139,9 @@ def fetch(dictionary, note_name):
 
 def cli(argv=None):
     args = parser.parse_args(argv) #Execute parse_args()
-    if args.new:
+    if len(sys.argv) == 1:
+        parser.print_usage()
+    elif args.new:
         new_note(data, args.new[0], args.new[1])
     elif args.list:
         list_items(data)
