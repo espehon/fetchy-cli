@@ -118,9 +118,16 @@ def rename_note(dictionary, old_name, new_name):
 
 
 def list_items(dictionary):
+    indent = 4
+    ellipsis = "..."
+    width_1 = len(str(max(dictionary.keys(), key=lambda k: len(str(k))))) + indent
+    width_2 =max([os.get_terminal_size().columns - width_1 - indent - len(ellipsis), indent * 2])
     print(f"{len(dictionary)} entries:")
     for key in dictionary:
-        print("\t" + key)
+        if len(repr(str(dictionary[key]))) > width_2:
+            print(f"{' ' * indent}{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key])[0:width_2])}{ellipsis}")
+        else:
+            print(f"{' ' * indent}{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key]))}")
 
 
 def copy_to_clipboard(dictionary, note_name):
