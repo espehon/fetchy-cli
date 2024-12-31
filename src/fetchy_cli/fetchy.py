@@ -17,7 +17,7 @@ except importlib.metadata.PackageNotFoundError:
     __version__ = "Package not installed..."
 
 # Set file paths
-storage_folder = os.path.expanduser("~/.share/fetchy/")
+storage_folder = os.path.expanduser("~/.local/share/fetchy/")
 storage_file = "fetchy.json"
 storage_path = storage_folder + storage_file
 
@@ -126,6 +126,7 @@ def list_items(dictionary):
 def copy_to_clipboard(dictionary, note_name):
     if note_name in dictionary:
         copykitten.copy(dictionary[note_name])
+        print(f"{note_name} copied to clipboard √")
     else:
         print(f"No item matched {note_name}")
 
