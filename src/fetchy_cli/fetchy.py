@@ -42,7 +42,7 @@ except ValueError:
 # Set argument parsing
 parser = argparse.ArgumentParser(
     description="Fetchy: Fetch strings from your system rather than your own memory!",
-    epilog="(fet with no arguments will list entires)\n\nExample:\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359\n\nHomepage: https://github.com/espehon/fetchy-cli",
+    epilog="(fet with no arguments will list entries)\n\nExample:\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359\n\nHomepage: https://github.com/espehon/fetchy-cli",
     allow_abbrev=False,
     add_help=False,
     usage="fet [Name] [-n Name Value] [-c Name] [-d Name1 ...] [-r OldName NewName] [-l] [-?] ",
