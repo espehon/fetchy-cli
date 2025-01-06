@@ -42,7 +42,7 @@ except ValueError:
 # Set argument parsing
 parser = argparse.ArgumentParser(
     description="Fetchy: Fetch strings from your system rather than your own memory!",
-    epilog="Example:\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359\n\nHomepage: https://github.com/espehon/fetchy-cli",
+    epilog="(fet with no arguments will list entires)\n\nExample:\n> fet -n pi 3.14159265359\n> fet pi\n3.14159265359\n\nHomepage: https://github.com/espehon/fetchy-cli",
     allow_abbrev=False,
     add_help=False,
     usage="fet [Name] [-n Name Value] [-c Name] [-d Name1 ...] [-r OldName NewName] [-l] [-?] ",
@@ -52,11 +52,11 @@ parser = argparse.ArgumentParser(
 parser.add_argument('-?', '--help', action='help', help='Show this help message and exit.')
 parser.add_argument('-v', '--version', action='version', version=__version__, help="Show package version and exit.")
 parser.add_argument('-c', '--copy', nargs=1, metavar='N', action='store', type=str, help='Copy the value of [N] to the clipboard.')
-parser.add_argument('-l', '--list', action='store_true', help='List saved variable names.')
+parser.add_argument('-l', '--list', action='store_true', help='List saved entry names and values.')
 parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), action='store', help='Create [N] with the value of [V]. (Overwrite existing)')
 parser.add_argument('-d', '--delete', nargs='+', metavar=('N1', 'N2'), action='store', type=str, help='Delete [N1] etc.')
 parser.add_argument('-r', '--rename', nargs=2, type=str, metavar=('O', 'N'), action='store', help='Rename [O] to [N].')
-parser.add_argument("name", nargs='?', help="Name of entry to fetch.")
+parser.add_argument("name", nargs='?', help="Name of entry to fetch. (Case sensitive)")
 
 
 def sort_dict(dictionary) -> dict:
@@ -116,18 +116,30 @@ def rename_note(dictionary, old_name, new_name):
     else:
         print(f"{old_name} is not an entry.")
 
-
 def list_items(dictionary):
+    if len(dictionary) == 0:
+        print("No entries. Try 'fet -?' for help.")
+        return
+    indent = 4
+    print(f"{len(dictionary)} entries:")
+    for key in dictionary:
+        print(f"{' ' * indent}{key}")
+
+
+def long_list_items(dictionary):
+    if len(dictionary) == 0:
+        print("No entries. Try 'fet -?' for help.")
+        return
     indent = 4
     ellipsis = "..."
     width_1 = len(str(max(dictionary.keys(), key=lambda k: len(str(k))))) + indent
-    width_2 =max([os.get_terminal_size().columns - width_1 - indent - len(ellipsis), indent * 2])
+    width_2 =max([os.get_terminal_size().columns - width_1 - indent - len(ellipsis) - 2, indent * 2])
     print(f"{len(dictionary)} entries:")
     for key in dictionary:
         if len(repr(str(dictionary[key]))) > width_2:
-            print(f"{' ' * indent}{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key])[0:width_2])}{ellipsis}")
+            print(f"{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key])[0:width_2] + ellipsis)}")
         else:
-            print(f"{' ' * indent}{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key]))}")
+            print(f"{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key]))}")
 
 
 def copy_to_clipboard(dictionary, note_name):
@@ -148,11 +160,11 @@ def fetch(dictionary, note_name):
 def cli(argv=None):
     args = parser.parse_args(argv) #Execute parse_args()
     if len(sys.argv) == 1:
-        parser.print_usage()
+        list_items(data)
     elif args.new:
         new_note(data, args.new[0], args.new[1])
     elif args.list:
-        list_items(data)
+        long_list_items(data)
     elif args.copy:
         copy_to_clipboard(data, args.copy[0])
     elif args.rename:
@@ -161,5 +173,3 @@ def cli(argv=None):
         delete_notes(data, args.delete)
     elif args.name:
         print(f"{args.name}:\n{data[args.name]}")
-
-    
