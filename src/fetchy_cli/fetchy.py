@@ -133,11 +133,12 @@ def long_list_items(dictionary):
     indent = 4
     ellipsis = "..."
     width_1 = len(str(max(dictionary.keys(), key=lambda k: len(str(k))))) + indent
-    width_2 =max([os.get_terminal_size().columns - width_1 - (indent * 2), indent * 2])
+    width_2 =max([os.get_terminal_size().columns - width_1 - (indent) - 2, indent * 2])
     print(f"{len(dictionary)} entries:")
     for key in dictionary:
         if len(repr(str(dictionary[key]))) > width_2:
-            print(f"{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key])[0:(width_2 - len(ellipsis))] + ellipsis)}")
+            offset = len(repr(str(dictionary[key])[width_2])) - len(str(dictionary[key])[width_2])
+            print(f"{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key])[0:(width_2 - len(ellipsis) - offset)] + ellipsis)}")
         else:
             print(f"{str.rjust(key, width_1)}{' ' * indent}{repr(str(dictionary[key]))}")
 
