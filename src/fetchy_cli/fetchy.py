@@ -7,6 +7,7 @@ import sys
 import argparse
 import json
 import importlib.metadata
+import difflib
 
 import copykitten
 
@@ -67,6 +68,27 @@ def sort_dict(dictionary) -> dict:
 def save_data(dictionary, file_path):
     with open(file_path, 'w') as file:
         json.dump(sort_dict(dictionary), file, indent=4)
+
+
+def find_best_match(user_input, dictionary, cutoff=0.7):
+    """Usage:
+    key = find_best_match(user_input, data)
+    if key:
+        print(data[key])
+    else:
+        print("No close match found.")"""
+    
+    keys = list(dictionary.keys())
+    # Normalize keys to lowercase for matching
+    keys_lower = [k.lower() for k in keys]
+    input_lower = user_input.lower()
+    # Find close matches
+    matches = difflib.get_close_matches(input_lower, keys_lower, n=1, cutoff=cutoff)
+    if matches:
+        # Return the original key (not lowercased)
+        matched_index = keys_lower.index(matches[0])
+        return keys[matched_index]
+    return None
 
 
 def overwrite_note(dictionary, note_name, note_value):
@@ -172,4 +194,5 @@ def cli(argv=None):
     elif args.delete:
         delete_notes(data, args.delete)
     elif args.name:
+        key_name = find_best_match(args.name, data)
         print(f"{args.name}:\n{data[args.name]}")
