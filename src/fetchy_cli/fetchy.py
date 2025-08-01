@@ -115,18 +115,25 @@ def new_note(dictionary, note_name, note_value):
 
 def delete_notes(dictionary, note_name_list: list):
     items_deleted = 0
-    for note_name in note_name_list:
-        if note_name in dictionary:
-            dictionary.pop(note_name)
-            items_deleted += 1
-            print(F"{note_name} marked for removal.")
+    print("Matched entries:")
+    for i in note_name_list:
+        print(f"\t{i}")
+    user = input("\nAre you sure you want to delete these entries? (y/N) > ").strip()
+    if len(user) > 0 and str(user[0]).lower() == "y":
+        for note_name in note_name_list:
+            if note_name in dictionary:
+                dictionary.pop(note_name)
+                items_deleted += 1
+                print(F"{note_name} marked for removal.")
+            else:
+                print(f"{note_name} is not an entry.")
+        if items_deleted > 0:
+            save_data(dictionary, storage_path)
+            print(f"{items_deleted} entries deleted.")
         else:
-            print(f"{note_name} is not an entry.")
-    if items_deleted > 0:
-        save_data(dictionary, storage_path)
-        print(f"{items_deleted} entries deleted.")
+            print("No changes were made.")
     else:
-        print("No changes were made.")
+        print("Deletion canceled.")
 
 
 def rename_note(dictionary, old_name, new_name):
@@ -188,11 +195,32 @@ def cli(argv=None):
     elif args.list:
         long_list_items(data)
     elif args.copy:
-        copy_to_clipboard(data, args.copy[0])
+        key_name = find_best_match(args.copy[0], data)
+        if key_name:
+            copy_to_clipboard(data, key_name)
+        else:
+            print(f"'{args.copy[0]}' did not match any entries :(")
     elif args.rename:
-        rename_note(data, args.rename[0], args.rename[1])    
+        key_name = find_best_match(args.rename[0], data)
+        if key_name:
+            rename_note(data, key_name, args.rename[1])
+        else:
+            print(f"'{args.copy[0]}' did not match any entries :(")
     elif args.delete:
-        delete_notes(data, args.delete)
+        key_list = []
+        for i in args.delete:
+            key_name = find_best_match(i, data)
+            if key_name:
+                key_list.append(key_name)
+            else:
+                print(f"'{i}' did not match any entries.")
+        if len(key_list) > 0:
+            delete_notes(data, key_list)
+        else:
+            print(f"No entries matched :(")
     elif args.name:
         key_name = find_best_match(args.name, data)
-        print(f"{args.name}:\n{data[args.name]}")
+        if key_name:
+            print(f"{key_name}:\n{data[key_name]}")
+        else:
+            print(f"'{args.name}' did not match any entries :(")
