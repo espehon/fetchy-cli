@@ -66,7 +66,7 @@ def sort_dict(dictionary) -> dict:
 
 def save_data(dictionary, file_path):
     with open(file_path, 'w') as file:
-        json.dump(sort_dict(dictionary), file)
+        json.dump(sort_dict(dictionary), file, indent=4)
 
 
 def overwrite_note(dictionary, note_name, note_value):
