@@ -10,7 +10,8 @@ authors = [
 ]
 
 description = "Fetch strings from your system rather than your own memory!"               # Header on PyPI (above readme)
-readme = "README.md"                                  # Boilerplate and will be added to the PyPI page
+readme = "README.md"                               # Boilerplate and will be added to the PyPI page
+license = "GPL-3.0-or-later"
 requires-python = ">=3.8"                            # Python version
 dependencies = [
 	"copykitten >= 1.2.0" 
@@ -20,7 +21,6 @@ classifiers = [                                       	# Kinda boilerplate. Used
 	"Programming Language :: Python :: 3",          # Tweak this to match your project
 	"Development Status :: 5 - Production/Stable",               # https://pypi.org/classifiers/
 	"Environment :: Console",
-	"License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
 	"Operating System :: OS Independent",
 	"Topic :: Utilities"
 ]
