@@ -33,4 +33,4 @@ fet = "fetchy_cli.fetchy:cli"               	# SYNTAX: <commandlet> = "folder.fi
 "Bug Tracker" = "https://github.com/espehon/fetchy-cli/issues"    # Boilerplate links to GitHub repo issues
 
 [tool.setuptools]
-license-files = ["LICEN[CS]E*", "vendored/licenses/*.txt", "AUTHORS.md"]
+license-files = []
