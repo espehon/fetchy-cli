@@ -12,7 +12,6 @@ authors = [
 description = "Fetch strings from your system rather than your own memory!"               # Header on PyPI (above readme)
 readme = "README.md"                               # Boilerplate and will be added to the PyPI page
 license = "GPL-3.0-or-later"
-license-files = ["LICEN[CS]E*", "vendored/licenses/*.txt", "AUTHORS.md"]
 requires-python = ">=3.8"                            # Python version
 dependencies = [
 	"copykitten >= 1.2.0" 
@@ -32,3 +31,6 @@ fet = "fetchy_cli.fetchy:cli"               	# SYNTAX: <commandlet> = "folder.fi
 [project.urls]
 "Homepage" = "https://github.com/espehon/fetchy-cli"              # Boilerplate links to GitHub repo
 "Bug Tracker" = "https://github.com/espehon/fetchy-cli/issues"    # Boilerplate links to GitHub repo issues
+
+[tool.setuptools]
+license-files = ["LICEN[CS]E*", "vendored/licenses/*.txt", "AUTHORS.md"]
