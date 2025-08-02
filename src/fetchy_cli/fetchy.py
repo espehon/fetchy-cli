@@ -8,6 +8,8 @@ import argparse
 import json
 import importlib.metadata
 import difflib
+import shutil
+import tempfile
 
 import copykitten
 
@@ -40,6 +42,18 @@ except ValueError:
     print(f"Error reading {storage_path}! Try deleting the file :(")
     sys.exit(1)
 
+
+supported_editors =  [
+    'vim',
+    'nano',
+    'emacs',
+    'micro',
+    'ne',
+    'joe',
+    'ed',
+    'kak'
+]
+
 # Set argument parsing
 parser = argparse.ArgumentParser(
     description="Fetchy: Fetch strings from your system rather than your own memory!",
@@ -57,6 +71,7 @@ parser.add_argument('-l', '--list', action='store_true', help='List saved entry 
 parser.add_argument('-n', '--new', nargs=2, type=str, metavar=('N', 'V'), action='store', help='Create [N] with the value of [V]. (Overwrite existing)')
 parser.add_argument('-d', '--delete', nargs='+', metavar=('N1', 'N2'), action='store', type=str, help='Delete [N1] etc.')
 parser.add_argument('-r', '--rename', nargs=2, type=str, metavar=('O', 'N'), action='store', help='Rename [O] to [N].')
+parser.add_argument('-e', '--edit', nargs=1, type=str, metavar='N', action='store', help="Edit the value of [N] in a text editor.")
 parser.add_argument("name", nargs='?', help="Name of entry to fetch. (Case sensitive)")
 
 
@@ -89,6 +104,51 @@ def find_best_match(user_input, dictionary, cutoff=0.7):
         matched_index = keys_lower.index(matches[0])
         return keys[matched_index]
     return None
+
+
+def edit_entry(dictionary, entry_name):
+    if entry_name not in dictionary:
+        print(f"Entry '{entry_name}' does not exist.")
+        return
+
+    # Write current value to a temp file
+    with tempfile.NamedTemporaryFile('w+', delete=False, suffix='.txt') as tmp:
+        tmp.write(str(dictionary[entry_name]))
+        tmp.flush()
+        tmp_name = tmp.name
+
+    try:
+        # Find an editor
+        editor = None
+        for editor_name in supported_editors:
+            if shutil.which(editor_name) is not None:
+                editor = editor_name
+                break
+        if editor is None:
+            editor = os.environ.get('EDITOR') or 'notepad'
+
+        # Open editor
+        os.system(f"{editor} \"{tmp_name}\"")
+
+        # Read edited value
+        with open(tmp_name, 'r') as f:
+            new_value = f.read().rstrip()
+
+        if new_value != str(dictionary[entry_name]):
+            dictionary[entry_name] = new_value
+            save_data(dictionary, storage_path)
+            print(f"Entry '{entry_name}' updated.")
+        else:
+            print("No changes made.")
+
+    except Exception as e:
+        print("An error occurred while editing the entry.")
+        print(e)
+    finally:
+        try:
+            os.remove(tmp_name)
+        except Exception:
+            pass
 
 
 def overwrite_note(dictionary, note_name, note_value):
@@ -206,6 +266,12 @@ def cli(argv=None):
             rename_note(data, key_name, args.rename[1])
         else:
             print(f"'{args.copy[0]}' did not match any entries :(")
+    elif args.edit:
+        key_name = find_best_match(args.edit[0], data)
+        if key_name:
+            edit_entry(data, key_name)
+        else:
+            print(f"'{args.edit[0]}' did not match any entries :(")
     elif args.delete:
         key_list = []
         for i in args.delete:
